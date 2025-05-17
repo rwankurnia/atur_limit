@@ -90,4 +90,10 @@ class BudgetProvider extends ChangeNotifier {
       SharedPrefsHelper.saveBudget(_budget!.totalBudget, _budget!.totalDays);
     }
   }
+
+  void setExpenses(List<Expense> expenses) {
+    _expenses = expenses;
+    SharedPrefsHelper.saveExpenses(_expenses);
+    notifyListeners();
+  }
 }

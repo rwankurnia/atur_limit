@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/budget_provider.dart';
 import '../widgets/expense_list.dart';
@@ -14,15 +15,89 @@ class DailyExpenseScreen extends StatelessWidget {
     final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp');
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      appBar: AppBar(title: const Text('Pengeluaran Harian')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(9),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sisa Anggaran',
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  formatter.format(provider.budget!.totalBudget - provider.totalSpent),
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.blueAccent,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Sisa Hari',
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  '${provider.daysLeft} hari',
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.blueAccent,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Anggaran Harian',
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  formatter.format(provider.dailyBudget),
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.blueAccent,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const ExpenseForm(),
+                const SizedBox(height: 16),
+                const SizedBox( // Ganti Expanded dengan SizedBox
+                  height: 252, // Atur tinggi tetap untuk daftar pengeluaran
+                  child: ExpenseList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingActionButton.small(
         onPressed: () {
           showDialog(
             context: context,
             builder: (context) {
               final controller = TextEditingController();
               return AlertDialog(
-                title: const Text('Tambah Anggaran'),
+                title: Text(
+                  'Tambah Anggaran',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                  ),
+              ),
                 content: TextField(
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w300,
+                  ),
                   controller: controller,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(hintText: 'Masukkan jumlah'),
@@ -30,7 +105,12 @@ class DailyExpenseScreen extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Batal'),
+                    child: Text(
+                      'Batal',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -41,7 +121,12 @@ class DailyExpenseScreen extends StatelessWidget {
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text('Tambah'),
+                    child: Text(
+                      'Tambah',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -49,33 +134,6 @@ class DailyExpenseScreen extends StatelessWidget {
           );
         },
         child: const Icon(Icons.add),
-      ),
-      appBar: AppBar(title: const Text('Pengeluaran Harian')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Sisa Anggaran: ${formatter.format(provider.budget!.totalBudget - provider.totalSpent)}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Sisa Hari: ${provider.daysLeft}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Anggaran Harian: ${formatter.format(provider.dailyBudget)}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 16),
-            const ExpenseForm(),
-            const SizedBox(height: 16),
-            const Expanded(child: ExpenseList()),
-          ],
-        ),
       ),
     );
   }

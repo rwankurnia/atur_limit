@@ -6,17 +6,13 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:atur_limit/main.dart';
-import 'package:atur_limit/theme/theme_cubit.dart';
-import 'package:atur_limit/theme/theme_local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:shared_preferences/src/shared_preferences_legacy.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(themeCubit: ThemeCubit(ThemeLocalStorage('defaultTheme' as SharedPreferences))));
+    await tester.pumpWidget(MyApp as Widget);
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

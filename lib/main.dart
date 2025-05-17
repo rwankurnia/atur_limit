@@ -1,16 +1,16 @@
+import 'package:atur_limit/theme/theme.dart';
 import 'package:atur_limit/theme/theme_cubit.dart';
-import 'package:atur_limit/theme/theme_local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'providers/budget_provider.dart';
 import 'screens/home_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final themeCubit = ThemeCubit(ThemeLocalStorage(sharedPreferences))..init();
+  await initializeDateFormatting('id_ID', null);
+  final themeCubit = ThemeCubit()..init();
   runApp(
     ChangeNotifierProvider(
       create: (_) => BudgetProvider(),
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Atur Limit',
             themeMode: state,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            theme: lightTheme,
+            darkTheme: darkTheme,
             home: const HomeScreen(),
           );
         },
